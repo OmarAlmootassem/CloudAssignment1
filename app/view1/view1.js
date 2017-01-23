@@ -9,10 +9,11 @@ angular.module('myApp.view1', ['ngRoute'])
   });
 }])
 
-.controller('View1Ctrl', function($scope) {
+.controller('View1Ctrl', function($scope, Map) {
     $scope.selectedItem  = null;
     $scope.searchText    = null;
     $scope.querySearch   = querySearch;
+    Map.init();
 	$scope.data = [{
 		value: "omar",
 		display: "Omar"
