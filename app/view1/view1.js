@@ -27,12 +27,30 @@ angular.module('myApp.view1', ['ngRoute'])
 		console.log(response);
 		for (var i = 0; i < response.length; i++){
 			$scope.data.push({
+				type: 'competition',
 				value: response[i].caption.toLowerCase(),
 				display: response[i].caption
 			});
 			competitionIds.push({
 				id: response[i].id,
 				display: response[i].caption
+			});
+		}
+		for (var i = 0; i < competitionIds.length; i++){
+			$.ajax({
+				  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
+				  url: 'https://api.football-data.org/v1/competitions/' + competitionIds[i].id + '/teams',
+				  dataType: 'json',
+				  type: 'GET',
+				}).done(function(response) {
+					for (var j = 0; j < response.teams.length; j++){
+						$scope.data.push({
+							type: 'team',
+							value: response.teams[j].name.toLowerCase(),
+							display: response.teams[j].name,
+							crestUrl: response.teams[j].crestUrl
+						});
+					}
 			});
 		}
 	});
