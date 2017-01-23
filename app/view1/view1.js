@@ -13,23 +13,31 @@ angular.module('myApp.view1', ['ngRoute'])
     $scope.selectedItem  = null;
     $scope.searchText    = null;
     $scope.querySearch   = querySearch;
+    $scope.local = window.location.href.includes("localhost");
+    $scope.data = [];
+    var competitionIds = [];
+
+    //Get all competitions
+    $.ajax({
+	  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
+	  url: 'http://api.football-data.org/v1/competitions/',
+	  dataType: 'json',
+	  type: 'GET',
+	}).done(function(response) {
+		console.log(response);
+		for (var i = 0; i < response.length; i++){
+			$scope.data.push({
+				value: response[i].caption.toLowerCase(),
+				display: response[i].caption
+			});
+			competitionIds.push({
+				id: response[i].id,
+				display: response[i].caption
+			});
+		}
+	});
+
     Map.init();
-	$scope.data = [{
-		value: "omar",
-		display: "Omar"
-	},{
-		value: "amer",
-		display: "Amer"
-	},{
-		value: "omarr",
-		display: "Omarr"
-	},{
-		value: "amal",
-		display: "Amal"
-	},{
-		value: "ameer",
-		display: "Ameer"
-	}];
 
 	$scope.getInfo = function (query){
 		console.log("Getting info: " + query);
@@ -44,7 +52,7 @@ angular.module('myApp.view1', ['ngRoute'])
       var lowercaseQuery = angular.lowercase(query);
 
       return function filterFn(state) {
-        return (state.value.indexOf(lowercaseQuery) === 0);
+        return (state.value.indexOf(lowercaseQuery) >= 0);
       };
 
     }
