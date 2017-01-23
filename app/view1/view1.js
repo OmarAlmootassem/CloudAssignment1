@@ -20,7 +20,7 @@ angular.module('myApp.view1', ['ngRoute'])
     //Get all competitions
     $.ajax({
 	  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
-	  url: 'http://api.football-data.org/v1/competitions/',
+	  url: 'https://api.football-data.org/v1/competitions/',
 	  dataType: 'json',
 	  type: 'GET',
 	}).done(function(response) {
