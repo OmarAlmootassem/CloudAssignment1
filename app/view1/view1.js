@@ -9,7 +9,7 @@ angular.module('myApp.view1', ['ngRoute'])
   });
 }])
 
-.controller('View1Ctrl', function($scope, Map) {
+.controller('View1Ctrl', function($scope, Map, $mdDialog) {
     $scope.selectedItem  = null;
     $scope.searchText    = null;
     $scope.querySearch   = querySearch;
@@ -37,7 +37,7 @@ angular.module('myApp.view1', ['ngRoute'])
 				short_form: response[i].league
 			});
 		}
-		console.log(competitionIds);
+		// console.log(competitionIds);
 		for (var i = 0; i < competitionIds.length; i++){
 			getTeams(competitionIds[i])
 		}
@@ -128,7 +128,36 @@ angular.module('myApp.view1', ['ngRoute'])
 		} else if (query.type == "team"){
 
 		}
-		
+	}
+
+	$scope.openTeamInfo = function(team){
+		$mdDialog.show({
+			locals: {team: team},
+			controller: mdDialogTeamController,
+			templateUrl: 'view1/team-dialog.html',
+			clickOutsideToClose: true,
+			fullscreen: false
+		});
+	}
+
+	var mdDialogTeamController = function($scope, team){
+		$scope.team = team;
+		console.log($scope.team);
+		var apiCall = team._links.team.href.replace("http", "https");
+
+		$.ajax({
+			  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
+			  url: apiCall,
+			  dataType: 'json',
+			  type: 'GET',
+			}).done(function(response) {
+				console.log(response);
+				$scope.teamInfo = response;
+		});
+
+		$scope.uploadPhoto = function(){
+			console.log("Uploading Photo");
+		}
 	}
 
 	var showCompetitionInfo = function(competition){

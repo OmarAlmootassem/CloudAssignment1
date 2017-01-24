@@ -1,0 +1,68 @@
+<md-dialog aria-label="Add Friends" style="width: 80vw; overflow: hidden;">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2 style="color: white">{{team.teamName}}</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="uploadPhoto()">
+        <i class="material-icons">add_a_photo</i>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div layout="row">
+      <div flex="33">
+        <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
+      </div>
+      <div flex="66">
+        <h3>League Standing</h3>
+        <md-table-container>
+          <table md-table md-row-select="true" multiple="false" ng-model="team">
+            <thead  md-head>
+              <tr md-row style="font-size: 14px">
+                <th md-column style="padding-left: 10px"><span>Position</span></th>
+                <th md-column style="padding-left: 10px"><span>Points</span></th>
+                <th md-column style="padding-left: 10px"><span>Games</span></th>
+                <th md-column style="padding-left: 10px"><span>Won</span></th>
+                <th md-column style="padding-left: 10px"><span>Drawn</span></th>
+                <th md-column style="padding-left: 10px"><span>Lost</span></th>
+                <th md-column style="padding-left: 10px"><span>Goal Difference</span></th>
+              </tr>
+            </thead>
+            <tbody md-body>
+              <tr md-row md-select="team" ng-click="openTeamInfo(team)" style="text-align: center; font-size: 14px; padding-top: 5px;">
+                <td md-cell style="padding-left: 10px">{{team.position}}</td>
+                <td md-cell style="padding-left: 10px">{{team.points}}</td>
+                <td md-cell style="padding-left: 10px">{{team.playedGames}}</td>
+                <td md-cell style="padding-left: 10px">{{team.wins}}</td>
+                <td md-cell style="padding-left: 10px">{{team.draws}}</td>
+                <td md-cell style="padding-left: 10px">{{team.losses}}</td>
+                <td md-cell style="padding-left: 10px">{{team.goalDifference}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </md-table-container>
+      </div>
+    </div>
+    <div layout="row" style="overflow-x: auto;">
+      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
+      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
+      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
+      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
+      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
+      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
+      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
+      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
+      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
+      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
+      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
+      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
+    </div>
+  </md-dialog-content>
+
+  <md-dialog-actions layout="row">
+    <span flex></span>
+    <md-button ng-click="cancel()">
+     Cancel
+    </md-button>
+  </md-dialog-actions>
+</md-dialog>
