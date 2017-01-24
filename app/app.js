@@ -47,5 +47,15 @@ app.service('Map', function($q) {
         });
         this.map.setCenter(res.geometry.location);
     }
+
+    this.zoomToCountry = function(info) {
+    	this.map.setCenter(new google.maps.LatLng(info.lat, info.long));
+    	this.map.setZoom(6);
+    }
+
+    this.reset = function(){
+    	this.map.setCenter(new google.maps.LatLng(48.5260, 15.2551));
+    	this.map.setZoom(5);
+    }
     
 });

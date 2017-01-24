@@ -7,7 +7,7 @@
 	            md-input-minlength="2"
 	            md-input-maxlength="18"
 	            md-selected-item="selectedItem"
-	            md-selected-item-change="selectedItem != null ? getInfo(selectedItem.value): 0"
+	            md-selected-item-change="selectedItem != null ? getInfo(selectedItem) : reset()"
 	            md-search-text="searchText"
 	            md-items="item in querySearch(searchText)"
 	            md-item-text="item.display"
