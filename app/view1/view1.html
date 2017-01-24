@@ -19,6 +19,46 @@
 	        </md-autocomplete>
 	    </form>
 	</div>
-    <br>
+	<div style="position: fixed; top: 0; right: 0; width: 650px;" ng-if="table && selectedItem">
+		<md-card>
+			<md-card-title>
+			<span class="md-headline">{{leagueName}}</span>
+			</md-card-title>
+			<md-card-content>
+				<md-content style="overflow-y: auto; height: 90vh; background: white;">
+					<md-table-container>
+			          <table md-table md-row-select="true" multiple="false" ng-model="selected">
+			            <thead  md-head>
+			              <tr md-row style="font-size: 14px">
+			                <th md-column style="padding-left: 10px"><span>Position</span></th>
+			                <th md-column style="padding-left: 10px"><span>Team</span></th>
+			                <th md-column style="padding-left: 10px"><span></span></th>
+			                <th md-column style="padding-left: 10px"><span>Points</span></th>
+			                <th md-column style="padding-left: 10px"><span>Games</span></th>
+			                <th md-column style="padding-left: 10px"><span>Won</span></th>
+			                <th md-column style="padding-left: 10px"><span>Drawn</span></th>
+			                <th md-column style="padding-left: 10px"><span>Lost</span></th>
+			                <th md-column style="padding-left: 10px"><span>Goal Difference</span></th>
+			              </tr>
+			            </thead>
+			            <tbody md-body>
+			              <tr md-row ng-repeat="team in table" style="text-align: center; font-size: 14px; padding-top: 5px;">
+			                <td md-cell style="padding-left: 10px">{{team.position}}</td>
+			                <td md-cell style="padding-left: 10px"><img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" class="md-avatar" alt="{{team.teamName}}" style="height: 50px; max-width: 50px;"></td>
+			                <td md-cell style="padding-left: 10px">{{team.teamName}}</td>
+			                <td md-cell style="padding-left: 10px">{{team.points}}</td>
+			                <td md-cell style="padding-left: 10px">{{team.playedGames}}</td>
+			                <td md-cell style="padding-left: 10px">{{team.wins}}</td>
+			                <td md-cell style="padding-left: 10px">{{team.draws}}</td>
+			                <td md-cell style="padding-left: 10px">{{team.losses}}</td>
+			                <td md-cell style="padding-left: 10px">{{team.goalDifference}}</td>
+			              </tr>
+			            </tbody>
+			          </table>
+			        </md-table-container>
+				</md-content>
+			</md-card-content>
+		</md-card>
+	</div>
     <md-button ng-if="local" class="md-primary" ng-href="https://floating-chamber-23266.herokuapp.com/#!/view1" target="_blank"style="position: fixed; bottom: 0; right: 0" class="md-padding">Live Site</md-button>
 </md-content>

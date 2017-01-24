@@ -17,7 +17,6 @@ angular.module('myApp.view1', ['ngRoute'])
     $scope.data = [];
     var competitionIds = [];
 
-    //Get all competitions
     $.ajax({
 	  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
 	  url: 'https://api.football-data.org/v1/competitions/',
@@ -29,6 +28,7 @@ angular.module('myApp.view1', ['ngRoute'])
 				type: 'competition',
 				value: response[i].caption.toLowerCase(),
 				display: response[i].caption,
+				id: response[i].id,
 				league_short: response[i].league
 			});
 			competitionIds.push({
@@ -122,11 +122,35 @@ angular.module('myApp.view1', ['ngRoute'])
 			//PORTUGAL
 			Map.zoomToCountry(countryCoordinates[6]);
 		}
+
+		if (query.type == "competition"){
+			showCompetitionInfo(query);
+		} else if (query.type == "team"){
+
+		}
 		
+	}
+
+	var showCompetitionInfo = function(competition){
+		$.ajax({
+			  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
+			  url: 'https://api.football-data.org/v1/competitions/' + competition.id + '/leagueTable',
+			  dataType: 'json',
+			  type: 'GET',
+			}).done(function(response) {
+				$scope.table = [];
+				$scope.leagueName = response.leagueCaption;
+				for (var i = 0; i < response.standing.length; i++){
+					$scope.table.push(response.standing[i]);
+				}
+				console.log($scope.table);
+				$scope.$applyAsync();
+		});
 	}
 
 	$scope.reset = function (){
 		Map.reset();
+		$scope.table = [];
 	}
 
 	function querySearch (query) {
