@@ -29,32 +29,39 @@ angular.module('myApp.view1', ['ngRoute'])
 				type: 'competition',
 				value: response[i].caption.toLowerCase(),
 				display: response[i].caption,
-				short_form: response[i].league
+				league_short: response[i].league
 			});
 			competitionIds.push({
 				id: response[i].id,
-				name: response[i].caption
+				name: response[i].caption,
+				short_form: response[i].league
 			});
 		}
-		console.log($scope.data);
+		console.log(competitionIds);
 		for (var i = 0; i < competitionIds.length; i++){
-			/*$.ajax({
-				  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
-				  url: 'https://api.football-data.org/v1/competitions/' + competitionIds[i].id + '/teams',
-				  dataType: 'json',
-				  type: 'GET',
-				}).done(function(response) {
-					for (var j = 0; j < response.teams.length; j++){
-						$scope.data.push({
-							type: 'team',
-							value: response.teams[j].name.toLowerCase(),
-							display: response.teams[j].name,
-							crestUrl: response.teams[j].crestUrl
-						});
-					}
-			});*/
+			getTeams(competitionIds[i])
 		}
 	});
+
+	var getTeams = function (league){
+		$.ajax({
+			  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
+			  url: 'https://api.football-data.org/v1/competitions/' + league.id + '/teams',
+			  dataType: 'json',
+			  type: 'GET',
+			}).done(function(response) {
+				for (var j = 0; j < response.teams.length; j++){
+					$scope.data.push({
+						type: 'team',
+						value: response.teams[j].name.toLowerCase(),
+						display: response.teams[j].name,
+						crestUrl: response.teams[j].crestUrl,
+						league_short: league.short_form,
+						league: league.name
+					});
+				}
+		});
+	}
 
     Map.init();
 
@@ -90,28 +97,28 @@ angular.module('myApp.view1', ['ngRoute'])
 	    	long: -8.2245
 	    }];
 
-		if (query.short_form == "EC" || query.short_form == "CL"){
+		if (query.league_short == "EC" || query.league_short == "CL"){
 			//EUROPE
 			Map.reset();
-		} else if (query.short_form == "PL" || query.short_form == "ELC" || query.short_form == "EL1"){
+		} else if (query.league_short == "PL" || query.league_short == "ELC" || query.league_short == "EL1"){
 			//ENGLAND
 			Map.zoomToCountry(countryCoordinates[1]);
-		} else if (query.short_form == "BL1" || query.short_form == "BL2" || query.short_form == "DFB"){
+		} else if (query.league_short == "BL1" || query.league_short == "BL2" || query.league_short == "DFB"){
 			//GERMANY
 			Map.zoomToCountry(countryCoordinates[2]);
-		} else if (query.short_form == "DED"){
+		} else if (query.league_short == "DED"){
 			//NETHERLANDS
 			Map.zoomToCountry(countryCoordinates[3]);
-		} else if (query.short_form == "FL1" || query.short_form == "FL2"){
+		} else if (query.league_short == "FL1" || query.league_short == "FL2"){
 			//FRANCE
 			Map.zoomToCountry(countryCoordinates[4]);
-		} else if (query.short_form == "PD" || query.short_form == "SD"){
+		} else if (query.league_short == "PD" || query.league_short == "SD"){
 			//SPAIN
 			Map.zoomToCountry(countryCoordinates[0]);
-		} else if (query.short_form == "SA"){
+		} else if (query.league_short == "SA"){
 			//ITALY
 			Map.zoomToCountry(countryCoordinates[5]);
-		} else if (query.short_form == "PPL"){
+		} else if (query.league_short == "PPL"){
 			//PORTUGAL
 			Map.zoomToCountry(countryCoordinates[6]);
 		}
