@@ -23,24 +23,27 @@ angular.module('myApp.view1', ['ngRoute'])
 	  dataType: 'json',
 	  type: 'GET',
 	}).done(function(response) {
+		console.log(response);
 		for (var i = 0; i < response.length; i++){
-			$scope.data.push({
-				type: 'competition',
-				value: response[i].caption.toLowerCase(),
-				display: response[i].caption,
-				id: response[i].id,
-				league_short: response[i].league
-			});
-			competitionIds.push({
-				id: response[i].id,
-				name: response[i].caption,
-				short_form: response[i].league
-			});
+			if (response[i].id != 424 && response[i].id != 432 && response[i].id != 440){
+				$scope.data.push({
+					type: 'competition',
+					value: response[i].caption.toLowerCase(),
+					display: response[i].caption,
+					id: response[i].id,
+					league_short: response[i].league
+				});
+				competitionIds.push({
+					id: response[i].id,
+					name: response[i].caption,
+					short_form: response[i].league
+				});
+			}
 		}
-		// console.log(competitionIds);
-		for (var i = 0; i < competitionIds.length; i++){
-			getTeams(competitionIds[i])
-		}
+
+		// for (var i = 0; i < competitionIds.length; i++){
+		// 	getTeams(competitionIds[i])
+		// }
 	});
 
 	var getTeams = function (league){
@@ -70,31 +73,31 @@ angular.module('myApp.view1', ['ngRoute'])
 		var countryCoordinates = [{
 	    	name: "spain",
 	    	lat: 40.4637,
-	    	long: -3.7492
+	    	long: -3.7492 + 6
 	    },{
 	    	name: "england",
 	    	lat: 52.3555,
-	    	long: -1.1743
+	    	long: -1.1743 + 6
 	    },{
 	    	name: "germany",
 	    	lat: 51.1657,
-	    	long: 10.4515
+	    	long: 10.4515 + 6
 	    },{
 	    	name: "netherlands",
 	    	lat: 52.1326,
-	    	long: 5.2913
+	    	long: 5.2913 + 6
 	    },{
 	    	name: "france",
 	    	lat: 46.2276,
-	    	long: 2.2137
+	    	long: 2.2137 + 6
 	    },{
 	    	name: "italy",
 	    	lat: 41.8719,
-	    	long: 12.5674
+	    	long: 12.5674 + 6
 	    },{
 	    	name: "portugal",
 	    	lat: 39.3999,
-	    	long: -8.2245
+	    	long: -8.2245 + 6
 	    }];
 
 		if (query.league_short == "EC" || query.league_short == "CL"){
