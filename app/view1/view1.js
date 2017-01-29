@@ -69,7 +69,7 @@ angular.module('myApp.view1', ['ngRoute'])
     Map.init();
 
 	$scope.getInfo = function (query){
-		console.log(query);
+		// console.log(query);
 		var countryCoordinates = [{
 	    	name: "spain",
 	    	lat: 40.4637,
@@ -165,19 +165,19 @@ angular.module('myApp.view1', ['ngRoute'])
 				$scope.images.push(childSnapshot.val().imageUrl);
 				$scope.$applyAsync();
 			});
-			console.log($scope.images);
+			// console.log($scope.images);
 		});
 
 		$scope.uploadPhoto = function(){
-			console.log("Uploading Photo");
+			// console.log("Uploading Photo");
 			var uploadButton = document.getElementById('file');
 			uploadButton.click();
 			uploadButton.addEventListener('change', function(e){
 				var file = e.target.files[0];
 
 				firebase.storage().ref().child($scope.team.teamName + '/' + guid()).put(file).then(function(snapshot){
-					console.log("uploaded file");
-					console.log(snapshot);
+					// console.log("uploaded file");
+					// console.log(snapshot);
 					firebase.database().ref($scope.team.teamName).push({
 						imageUrl: snapshot.a.downloadURLs[0]
 					});
