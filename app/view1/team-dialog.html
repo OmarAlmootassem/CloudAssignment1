@@ -6,6 +6,7 @@
       <md-button class="md-icon-button" ng-click="uploadPhoto()">
         <i class="material-icons">add_a_photo</i>
       </md-button>
+      <input id="file" type="file" name="file" class="inputimg" id="nameImg" accept="image/*" style="display: none;">
     </div>
   </md-toolbar>
   <md-dialog-content>
@@ -44,18 +45,7 @@
       </div>
     </div>
     <div layout="row" style="overflow-x: auto;">
-      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
-      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
-      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
-      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
-      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
-      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
-      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
-      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
-      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
-      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
-      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
-      <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
+      <img ng-repeat="image in images track by $index" ng-src="{{image}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="height: 200px; width: auto; padding: 10px;">
     </div>
   </md-dialog-content>
 

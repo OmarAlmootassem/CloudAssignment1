@@ -145,6 +145,7 @@ angular.module('myApp.view1', ['ngRoute'])
 
 	var mdDialogTeamController = function($scope, team){
 		$scope.team = team;
+		$scope.images = [];
 		console.log($scope.team);
 		var apiCall = team._links.team.href.replace("http", "https");
 
@@ -158,8 +159,40 @@ angular.module('myApp.view1', ['ngRoute'])
 				$scope.teamInfo = response;
 		});
 
+		firebase.database().ref($scope.team.teamName).on('value', function(snapshot){
+			$scope.images.length = 0;
+			snapshot.forEach(function(childSnapshot){
+				$scope.images.push(childSnapshot.val().imageUrl);
+				$scope.$applyAsync();
+			});
+			console.log($scope.images);
+		});
+
 		$scope.uploadPhoto = function(){
 			console.log("Uploading Photo");
+			var uploadButton = document.getElementById('file');
+			uploadButton.click();
+			uploadButton.addEventListener('change', function(e){
+				var file = e.target.files[0];
+
+				firebase.storage().ref().child($scope.team.teamName + '/' + guid()).put(file).then(function(snapshot){
+					console.log("uploaded file");
+					console.log(snapshot);
+					firebase.database().ref($scope.team.teamName).push({
+						imageUrl: snapshot.a.downloadURLs[0]
+					});
+				});
+			});
+		}
+
+		function guid() {
+		  function s4() {
+		    return Math.floor((1 + Math.random()) * 0x10000)
+		      .toString(16)
+		      .substring(1);
+		  }
+		  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+		    s4() + '-' + s4() + s4() + s4();
 		}
 	}
 
