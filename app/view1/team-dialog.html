@@ -14,7 +14,7 @@
       <div flex="33">
         <img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="max-height: 200px; width: auto; padding: 10px;">
       </div>
-      <div flex="66">
+      <div flex="50">
         <h3>League Standing</h3>
         <md-table-container>
           <table md-table md-row-select="true" multiple="false" ng-model="team">
@@ -43,9 +43,15 @@
           </table>
         </md-table-container>
       </div>
+      <div flex>
+        <h3>Squad Value</h3>{{teamInfo.squadMarketValue}}
+      </div>
     </div>
-    <div layout="row" style="overflow-x: auto;">
+    <div layout="row" style="overflow-x: auto;" ng-if="images.length > 0">
       <img ng-repeat="image in images track by $index" ng-src="{{image}}" onerror="this.style.visibility='hidden'" alt="{{team.teamName}}" style="height: 200px; width: auto; padding: 10px;">
+    </div>
+    <div layout="row" style="display: inline; text-align: center; width: 100%;" ng-if="images.length == 0" ng-cloak>
+      <h2>No Images Uploaded! Upload your own and show your support!<h2>
     </div>
   </md-dialog-content>
 

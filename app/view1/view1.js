@@ -46,6 +46,10 @@ angular.module('myApp.view1', ['ngRoute'])
 		// }
 	});
 
+	$scope.focus = function(){
+		document.getElementById("input-0").focus();
+	}
+
 	var getTeams = function (league){
 		$.ajax({
 			  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
