@@ -73,6 +73,8 @@ angular.module('myApp.view1', ['ngRoute'])
     Map.init();
 
 	$scope.getInfo = function (query){
+		console.log($scope.selectedItem);
+		$scope.selectedItem = query;
 		// console.log(query);
 		var countryCoordinates = [{
 	    	name: "spain",
