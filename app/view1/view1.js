@@ -9,22 +9,34 @@ angular.module('myApp.view1', ['ngRoute'])
   });
 }])
 
+/**
+ * View1Ctrl
+ * @param {!angular.$scope} $scope
+ * @param {!myApp.Map} Map
+ * @param {!angular-material.$mdDialog} $mdDialog
+ */
 .controller('View1Ctrl', function($scope, Map, $mdDialog) {
-    $scope.selectedItem  = null;
-    $scope.searchText    = null;
+    $scope.selectedItem  = null;	//Item chosen from search bar
+    $scope.searchText    = null;	//Text in the search bar
     $scope.querySearch   = querySearch;
-    $scope.local = window.location.href.includes("localhost");
-    $scope.data = [];
-    var competitionIds = [];
+    $scope.local = window.location.href.includes("localhost");	//Check if app is running on localhost
+    $scope.data = [];	//JSON array of leagues
+    var competitionIds = [];	//JSON array of competitions
 
+    /*
+     * Retreives JSON array of all competitions available in the api
+     * using ajx to handle background process
+     */
     $.ajax({
 	  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
 	  url: 'https://api.football-data.org/v1/competitions/',
 	  dataType: 'json',
 	  type: 'GET',
 	}).done(function(response) {
-		console.log(response);
+		// console.log(response);
+		//Loop through the entire response
 		for (var i = 0; i < response.length; i++){
+			//Only add a competition if it is a league competition and not a knockout competition
 			if (response[i].id != 424 && response[i].id != 432 && response[i].id != 440){
 				$scope.data.push({
 					type: 'competition',
@@ -41,16 +53,17 @@ angular.module('myApp.view1', ['ngRoute'])
 			}
 		}
 
-		// for (var i = 0; i < competitionIds.length; i++){
-		// 	getTeams(competitionIds[i])
-		// }
+		//Gets all teams in all leagues
+		/*for (var i = 0; i < competitionIds.length; i++){
+			getTeams(competitionIds[i])
+		}*/
 	});
 
-	$scope.focus = function(){
-		document.getElementById("input-0").focus();
-	}
-
-	var getTeams = function (league){
+	/**
+	 * Retreives list of teams in specified league
+	 * @param league
+	 */
+	function getTeams (league){
 		$.ajax({
 			  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
 			  url: 'https://api.football-data.org/v1/competitions/' + league.id + '/teams',
@@ -70,10 +83,16 @@ angular.module('myApp.view1', ['ngRoute'])
 		});
 	}
 
-    Map.init();
+    Map.init();	//Initialize the Google Map
 
+    /**
+     * Gets information from the query and uses it to zoom in the map
+     * and display the correct information
+     * @param query - JSON object chosen from search
+     */
 	$scope.getInfo = function (query){
-		// console.log(query);
+		//Coordinates for the countries with the longitude offset by 6 to 
+		//offset the map to the left
 		var countryCoordinates = [{
 	    	name: "spain",
 	    	lat: 40.4637,
@@ -137,6 +156,10 @@ angular.module('myApp.view1', ['ngRoute'])
 		}
 	}
 
+	/**
+	 * Opens a dialog displaying more detailed information about the team
+	 * @param team - the team
+	 */
 	$scope.openTeamInfo = function(team){
 		$mdDialog.show({
 			locals: {team: team},
@@ -147,23 +170,30 @@ angular.module('myApp.view1', ['ngRoute'])
 		});
 	}
 
+	/**
+	 * Controller for the teams mdDialog
+	 * @param {!angular.$scope} $scope
+	 * @param {!myApp.team} team
+	 */
 	var mdDialogTeamController = function($scope, team){
 		$scope.team = team;
-		$scope.images = [];
+		$scope.images = [];	//List of all images
 		$scope.uploadListener = false;
-		console.log($scope.team);
-		var apiCall = team._links.team.href.replace("http", "https");
+		// console.log($scope.team);
+		var apiCall = team._links.team.href.replace("http", "https");	//ensure that api call is secured
 
+		//Get team information
 		$.ajax({
 			  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
 			  url: apiCall,
 			  dataType: 'json',
 			  type: 'GET',
 			}).done(function(response) {
-				console.log(response);
+				// console.log(response);
 				$scope.teamInfo = response;
 		});
 
+		//Get a list of all the images already uploaded
 		firebase.database().ref($scope.team.teamName).on('value', function(snapshot){
 			$scope.images.length = 0;
 			snapshot.forEach(function(childSnapshot){
@@ -173,15 +203,20 @@ angular.module('myApp.view1', ['ngRoute'])
 			// console.log($scope.images);
 		});
 
+		/**
+		 * Uploads the photos
+		 */
 		$scope.uploadPhoto = function(){
 			// console.log("Uploading Photo");
 			var uploadButton = document.getElementById('file');
 			uploadButton.click();
 			if (!$scope.uploadListener){
 				$scope.uploadListener = true;
+				//Add an event listener for the upload button
 				uploadButton.addEventListener('change', function(e){
 					var file = e.target.files[0];
 
+					//Upload the file to firebase and save a reference in the database
 					firebase.storage().ref().child($scope.team.teamName + '/' + guid()).put(file).then(function(snapshot){
 						console.log("uploaded file");
 						// console.log(snapshot);
@@ -193,10 +228,16 @@ angular.module('myApp.view1', ['ngRoute'])
 			}
 		}
 
+		/**
+		 * Closes the dialog
+		 */
 		$scope.cancel = function(){
 			$mdDialog.cancel();
 		}
 
+		/**
+		 * Generates a Unique ID
+		 */
 		function guid() {
 		  function s4() {
 		    return Math.floor((1 + Math.random()) * 0x10000)
@@ -208,6 +249,10 @@ angular.module('myApp.view1', ['ngRoute'])
 		}
 	}
 
+	/**
+	 * Retrieves the league table for the specified competition
+	 * @param competitions - the specified competition
+	 */
 	var showCompetitionInfo = function(competition){
 		$.ajax({
 			  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
@@ -216,25 +261,39 @@ angular.module('myApp.view1', ['ngRoute'])
 			  type: 'GET',
 			}).done(function(response) {
 				$scope.table = [];
-				$scope.leagueName = response.leagueCaption;
+				$scope.leagueName = response.leagueCaption;	//Save the league name is a scope variabl
+				//Save the league table in an array
 				for (var i = 0; i < response.standing.length; i++){
 					$scope.table.push(response.standing[i]);
 				}
-				console.log($scope.table);
+				// console.log($scope.table);
 				$scope.$applyAsync();
 		});
 	}
 
+	/**
+	 * Resets the map and clears the table
+	 */
 	$scope.reset = function (){
 		Map.reset();
 		$scope.table = [];
 	}
 
+	/**
+	 * Part of the autocomplete to search for possible completions
+	 * @param query - the text in the autocomplete box
+	 * @return results - list of suggestions
+	 */
 	function querySearch (query) {
       var results = query ? $scope.data.filter( createFilterFor(query) ) : $scope.data;
       return results;
     }
 
+    /**
+     * Creates a filter for the query
+     * @param query - the text in the autocomplete box
+     * @return filterFn(state) - suggestion
+     */
     function createFilterFor(query) {
       var lowercaseQuery = angular.lowercase(query);
 
