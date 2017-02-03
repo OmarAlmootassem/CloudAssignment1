@@ -1,6 +1,6 @@
 <md-content style="overflow: hidden;">
 	<div id="map" style="position: fixed; width:100vw; height:100vh;"></div>
-	<div style="position: fixed; width: 392px; top: 0; left: 0" class="md-padding animated fadeInDownBig">
+	<div style="position: fixed; width: 392px; top: 0; left: 0" class="md-padding">
 		<form ng-submit="$event.preventDefault()" name="searchForm">
 	    	<md-autocomplete
 	            md-input-name="autocompleteField"
@@ -19,7 +19,7 @@
 	        </md-autocomplete>
 	    </form>
 	</div>
-	<div style="position: fixed; top: 0; right: 0; width: 650px;" ng-class="(table && selectedItem) ? 'animated bounceInRight' : ''" ng-if="table && selectedItem">
+	<div style="position: fixed; top: 0; right: 0; width: 650px;" ng-if="table && selectedItem">
 		<md-card>
 			<md-card-title>
 			<span class="md-headline">{{leagueName}}</span>
