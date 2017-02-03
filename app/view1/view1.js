@@ -46,10 +46,6 @@ angular.module('myApp.view1', ['ngRoute'])
 		// }
 	});
 
-	$scope.focus = function(){
-		document.getElementById("input-0").focus();
-	}
-
 	var getTeams = function (league){
 		$.ajax({
 			  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
@@ -73,8 +69,6 @@ angular.module('myApp.view1', ['ngRoute'])
     Map.init();
 
 	$scope.getInfo = function (query){
-		console.log($scope.selectedItem);
-		$scope.selectedItem = query;
 		// console.log(query);
 		var countryCoordinates = [{
 	    	name: "spain",
@@ -152,7 +146,6 @@ angular.module('myApp.view1', ['ngRoute'])
 	var mdDialogTeamController = function($scope, team){
 		$scope.team = team;
 		$scope.images = [];
-		$scope.uploadListener = false;
 		console.log($scope.team);
 		var apiCall = team._links.team.href.replace("http", "https");
 
@@ -179,24 +172,17 @@ angular.module('myApp.view1', ['ngRoute'])
 			// console.log("Uploading Photo");
 			var uploadButton = document.getElementById('file');
 			uploadButton.click();
-			if (!$scope.uploadListener){
-				$scope.uploadListener = true;
-				uploadButton.addEventListener('change', function(e){
-					var file = e.target.files[0];
+			uploadButton.addEventListener('change', function(e){
+				var file = e.target.files[0];
 
-					firebase.storage().ref().child($scope.team.teamName + '/' + guid()).put(file).then(function(snapshot){
-						console.log("uploaded file");
-						// console.log(snapshot);
-						firebase.database().ref($scope.team.teamName).push({
-							imageUrl: snapshot.a.downloadURLs[0]
-						});
+				firebase.storage().ref().child($scope.team.teamName + '/' + guid()).put(file).then(function(snapshot){
+					// console.log("uploaded file");
+					// console.log(snapshot);
+					firebase.database().ref($scope.team.teamName).push({
+						imageUrl: snapshot.a.downloadURLs[0]
 					});
 				});
-			}
-		}
-
-		$scope.cancel = function(){
-			$mdDialog.cancel();
+			});
 		}
 
 		function guid() {
