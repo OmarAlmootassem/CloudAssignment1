@@ -1,3 +1,9 @@
+/*!
+ * Team Experience
+ * Omar Almootassem
+ * v1.0
+ */
+
 'use strict';
 
 angular.module('myApp.view1', ['ngRoute'])

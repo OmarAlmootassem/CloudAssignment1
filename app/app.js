@@ -1,3 +1,9 @@
+/*!
+ * Team Experience
+ * Omar Almootassem
+ * v1.0
+ */
+
 'use strict';
 
 // Declare app level module which depends on views, and components
