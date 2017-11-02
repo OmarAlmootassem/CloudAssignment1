@@ -1,0 +1,65 @@
+<md-content style="overflow: hidden;">
+	<div id="map" class="map"></div>
+	<div class="md-padding autocomplete animated fadeInDownBig">
+		<form ng-submit="$event.preventDefault()" name="searchForm">
+	    	<md-autocomplete
+	            md-input-name="autocompleteField"
+	            md-input-minlength="2"
+	            md-input-maxlength="18"
+	            md-selected-item="selectedItem"
+	            md-selected-item-change="selectedItem != null ? getInfo(selectedItem) : reset()"
+	            md-search-text="searchText"
+	            md-items="item in querySearch(searchText)"
+	            md-item-text="item.display"
+	            md-require-match
+	            placeholder="Search Leagues">
+				<md-item-template>
+					<span md-highlight-text="searchText">{{item.display}}</span>
+					<span class="autocomplete-league">{{item.league}}</span>
+				</md-item-template>
+	        </md-autocomplete>
+	    </form>
+	</div>
+	<div class="card-div" ng-class="(table && selectedItem) ? 'animated bounceInRight' : ''" ng-if="table && selectedItem">
+		<md-card>
+			<md-card-title>
+			<span class="md-headline">{{leagueName}}</span>
+			</md-card-title>
+			<md-card-content>
+				<md-content class="card-content">
+					<md-table-container>
+			          <table md-table md-row-select="true" multiple="false" ng-model="team">
+			            <thead  md-head>
+			              <tr md-row style="font-size: 14px">
+			                <th md-column><span>Position</span></th>
+			                <th md-column><span>Team</span></th>
+			                <th md-column><span></span></th>
+			                <th md-column><span>Points</span></th>
+			                <th md-column><span>Games</span></th>
+			                <th md-column><span>Won</span></th>
+			                <th md-column><span>Drawn</span></th>
+			                <th md-column><span>Lost</span></th>
+			                <th md-column><span>Goal Difference</span></th>
+			              </tr>
+			            </thead>
+			            <tbody md-body>
+			              <tr md-row md-select="team" ng-click="openTeamInfo(team)" ng-repeat="team in table" class="table-row">
+			                <td md-cell>{{team.position}}</td>
+			                <td md-cell><img ng-src="{{team.crestURI}}" onerror="this.style.visibility='hidden'" class="md-avatar img" alt="{{team.teamName}}"></td>
+			                <td md-cell>{{team.teamName}}</td>
+			                <td md-cell>{{team.points}}</td>
+			                <td md-cell>{{team.playedGames}}</td>
+			                <td md-cell>{{team.wins}}</td>
+			                <td md-cell>{{team.draws}}</td>
+			                <td md-cell>{{team.losses}}</td>
+			                <td md-cell>{{team.goalDifference}}</td>
+			              </tr>
+			            </tbody>
+			          </table>
+			        </md-table-container>
+				</md-content>
+			</md-card-content>
+		</md-card>
+	</div>
+    <md-button ng-if="local" class="md-primary" ng-href="https://floating-chamber-23266.herokuapp.com/#!/view1" target="_blank" class="md-padding live-btn">Live Site</md-button>
+</md-content>

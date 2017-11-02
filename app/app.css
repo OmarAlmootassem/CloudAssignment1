@@ -1,33 +1,59 @@
-/* app css stylesheet */
-
-.menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
+.map {
+	position: fixed; 
+	width:100vw; 
+	height:100vh;
 }
 
-.menu:before {
-  content: "[";
+.autocomplete {
+	position: fixed; 
+	width: 392px; 
+	top: 0; 
+	left: 0
 }
 
-.menu:after {
-  content: "]";
+.autocomplete-league {
+	color: #757575; 
+	font-size: 10px;
 }
 
-.menu > li {
-  display: inline;
+.card-div {
+	position: fixed;
+	top: 0; 
+	right: 0; 
+	width: 700px;
 }
 
-.menu > li + li:before {
-  content: "|";
-  padding-right: 0.3em;
+.card-content {
+	overflow-y: auto; 
+	height: 90vh; 
+	background: white;
 }
 
-.hide{
+.table-row {
+	text-align: center; 
+	font-size: 14px; 
+	padding-top: 5px;
+}
+
+th, td {
+	padding-left: 10px
+}
+
+.img {
+	height: 50px; 
+	max-width: 50px;
+}
+
+.live-btn {
+	position: fixed; 
+	bottom: 0; 
+	right: 0
+}
+
+.hide {
 	display: none;
 }
 
-.show{
+.show {
 	display: block;
 }

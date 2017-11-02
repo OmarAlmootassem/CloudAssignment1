@@ -1,17 +1,17 @@
 /*!
  * Team Experience
  * Omar Almootassem
- * v1.0
+ * v1.1
  */
 
 'use strict';
 
-angular.module('myApp.view1', ['ngRoute'])
+angular.module('myApp.map', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/view1', {
-    templateUrl: 'view1/view1.html',
-    controller: 'View1Ctrl'
+  $routeProvider.when('/map', {
+    templateUrl: 'map/map.html',
+    controller: 'MapCtrl'
   });
 }])
 
@@ -21,7 +21,7 @@ angular.module('myApp.view1', ['ngRoute'])
  * @param {!myApp.Map} Map
  * @param {!angular-material.$mdDialog} $mdDialog
  */
-.controller('View1Ctrl', function($scope, Map, $mdDialog) {
+.controller('MapCtrl', function($scope, Map, $mdDialog) {
     $scope.selectedItem  = null;	//Item chosen from search bar
     $scope.searchText    = null;	//Text in the search bar
     $scope.querySearch   = querySearch;
@@ -31,7 +31,7 @@ angular.module('myApp.view1', ['ngRoute'])
 
     /*
      * Retreives JSON array of all competitions available in the api
-     * using ajx to handle background process
+     * using ajax to handle background process
      */
     $.ajax({
 	  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
@@ -39,7 +39,6 @@ angular.module('myApp.view1', ['ngRoute'])
 	  dataType: 'json',
 	  type: 'GET',
 	}).done(function(response) {
-		// console.log(response);
 		//Loop through the entire response
 		for (var i = 0; i < response.length; i++){
 			//Only add a competition if it is a league competition and not a knockout competition
@@ -58,11 +57,6 @@ angular.module('myApp.view1', ['ngRoute'])
 				});
 			}
 		}
-
-		//Gets all teams in all leagues
-		/*for (var i = 0; i < competitionIds.length; i++){
-			getTeams(competitionIds[i])
-		}*/
 	});
 
 	/**
@@ -155,11 +149,7 @@ angular.module('myApp.view1', ['ngRoute'])
 			Map.zoomToCountry(countryCoordinates[6]);
 		}
 
-		if (query.type == "competition"){
-			showCompetitionInfo(query);
-		} else if (query.type == "team"){
-
-		}
+		showCompetitionInfo(query);
 	}
 
 	/**
@@ -170,7 +160,7 @@ angular.module('myApp.view1', ['ngRoute'])
 		$mdDialog.show({
 			locals: {team: team},
 			controller: mdDialogTeamController,
-			templateUrl: 'view1/team-dialog.html',
+			templateUrl: 'map/team-dialog.html',
 			clickOutsideToClose: true,
 			fullscreen: false
 		});
@@ -195,7 +185,6 @@ angular.module('myApp.view1', ['ngRoute'])
 			  dataType: 'json',
 			  type: 'GET',
 			}).done(function(response) {
-				// console.log(response);
 				$scope.teamInfo = response;
 		});
 
@@ -206,7 +195,6 @@ angular.module('myApp.view1', ['ngRoute'])
 				$scope.images.push(childSnapshot.val().imageUrl);
 				$scope.$applyAsync();
 			});
-			// console.log($scope.images);
 		});
 
 		/**
@@ -246,12 +234,9 @@ angular.module('myApp.view1', ['ngRoute'])
 		 */
 		function guid() {
 		  function s4() {
-		    return Math.floor((1 + Math.random()) * 0x10000)
-		      .toString(16)
-		      .substring(1);
+		    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
 		  }
-		  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-		    s4() + '-' + s4() + s4() + s4();
+		  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 		}
 	}
 
