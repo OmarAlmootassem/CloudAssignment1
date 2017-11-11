@@ -33,7 +33,7 @@ angular.module('myApp.map', ['ngRoute'])
      * Retreives JSON array of all competitions available in the api
      * using ajax to handle background process
      */
-    $http.get('http://localhost:3001/api/cloud/1/competitions').then(function(data) {
+    $http.get('http://35.196.176.82:3001/api/cloud/1/competitions').then(function(data) {
     	var response = data.data;
     	//Loop through the entire response
 		for (var i = 0; i < response.length; i++){
@@ -62,7 +62,7 @@ angular.module('myApp.map', ['ngRoute'])
 	 * @param league
 	 */
 	function getTeams (league){
-		$http.get('http://localhost:3001/api/cloud/1/competitions/' + league.id + '/teams').then(function(data) {
+		$http.get('http://35.196.176.82:3001/api/cloud/1/competitions/' + league.id + '/teams').then(function(data) {
 			var response = data.data;
 			for (var j = 0; j < response.teams.length; j++){
 					$scope.data.push({
@@ -175,7 +175,7 @@ angular.module('myApp.map', ['ngRoute'])
 		var apiCall = team._links.team.href.replace("http", "https");	//ensure that api call is secured
 
 		//Get team information
-		$http.post('http://localhost:3001/api/cloud/1/team', {api: apiCall}).then(function(data) {
+		$http.post('http://35.196.176.82:3001/api/cloud/1/team', {api: apiCall}).then(function(data) {
 			var response = data.data;
 				$scope.teamInfo = response;
 		}, function(err) {
@@ -239,7 +239,7 @@ angular.module('myApp.map', ['ngRoute'])
 	 * @param competitions - the specified competition
 	 */
 	var showCompetitionInfo = function(competition){
-		$http.get('http://localhost:3001/api/cloud/1/competitions/' + competition.id + '/table').then(function(data) {
+		$http.get('http://35.196.176.82:3001/api/cloud/1/competitions/' + competition.id + '/table').then(function(data) {
 			var response = data.data;
 			$scope.table = [];
 				$scope.leagueName = response.leagueCaption;	//Save the league name is a scope variabl
