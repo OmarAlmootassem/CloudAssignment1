@@ -21,7 +21,7 @@ angular.module('myApp.map', ['ngRoute'])
  * @param {!myApp.Map} Map
  * @param {!angular-material.$mdDialog} $mdDialog
  */
-.controller('MapCtrl', function($scope, Map, $mdDialog) {
+.controller('MapCtrl', function($scope, Map, $mdDialog, $http) {
     $scope.selectedItem  = null;	//Item chosen from search bar
     $scope.searchText    = null;	//Text in the search bar
     $scope.querySearch   = querySearch;
@@ -33,13 +33,9 @@ angular.module('myApp.map', ['ngRoute'])
      * Retreives JSON array of all competitions available in the api
      * using ajax to handle background process
      */
-    $.ajax({
-	  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
-	  url: 'https://api.football-data.org/v1/competitions/',
-	  dataType: 'json',
-	  type: 'GET',
-	}).done(function(response) {
-		//Loop through the entire response
+    $http.get('http://localhost:3001/api/cloud/1/competitions').then(function(data) {
+    	var response = data.data;
+    	//Loop through the entire response
 		for (var i = 0; i < response.length; i++){
 			//Only add a competition if it is a league competition and not a knockout competition
 			if (response[i].id != 424 && response[i].id != 432 && response[i].id != 440){
@@ -57,20 +53,18 @@ angular.module('myApp.map', ['ngRoute'])
 				});
 			}
 		}
-	});
+    }, function(err) {
+    	console.error(err);
+    });
 
 	/**
 	 * Retreives list of teams in specified league
 	 * @param league
 	 */
 	function getTeams (league){
-		$.ajax({
-			  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
-			  url: 'https://api.football-data.org/v1/competitions/' + league.id + '/teams',
-			  dataType: 'json',
-			  type: 'GET',
-			}).done(function(response) {
-				for (var j = 0; j < response.teams.length; j++){
+		$http.get('http://localhost:3001/api/cloud/1/competitions/' + league.id + '/teams').then(function(data) {
+			var response = data.data;
+			for (var j = 0; j < response.teams.length; j++){
 					$scope.data.push({
 						type: 'team',
 						value: response.teams[j].name.toLowerCase(),
@@ -80,6 +74,8 @@ angular.module('myApp.map', ['ngRoute'])
 						league: league.name
 					});
 				}
+		}, function(err) {
+			console.error(err);
 		});
 	}
 
@@ -179,13 +175,11 @@ angular.module('myApp.map', ['ngRoute'])
 		var apiCall = team._links.team.href.replace("http", "https");	//ensure that api call is secured
 
 		//Get team information
-		$.ajax({
-			  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
-			  url: apiCall,
-			  dataType: 'json',
-			  type: 'GET',
-			}).done(function(response) {
+		$http.post('http://localhost:3001/api/cloud/1/team', {api: apiCall}).then(function(data) {
+			var response = data.data;
 				$scope.teamInfo = response;
+		}, function(err) {
+			console.error(err);
 		});
 
 		//Get a list of all the images already uploaded
@@ -245,13 +239,9 @@ angular.module('myApp.map', ['ngRoute'])
 	 * @param competitions - the specified competition
 	 */
 	var showCompetitionInfo = function(competition){
-		$.ajax({
-			  headers: { 'X-Auth-Token': '15379b45f5f84cd3af6e7765d09ebfa2' },
-			  url: 'https://api.football-data.org/v1/competitions/' + competition.id + '/leagueTable',
-			  dataType: 'json',
-			  type: 'GET',
-			}).done(function(response) {
-				$scope.table = [];
+		$http.get('http://localhost:3001/api/cloud/1/competitions/' + competition.id + '/table').then(function(data) {
+			var response = data.data;
+			$scope.table = [];
 				$scope.leagueName = response.leagueCaption;	//Save the league name is a scope variabl
 				//Save the league table in an array
 				for (var i = 0; i < response.standing.length; i++){
@@ -259,6 +249,8 @@ angular.module('myApp.map', ['ngRoute'])
 				}
 				// console.log($scope.table);
 				$scope.$applyAsync();
+		}, function(err) {
+			console.error(err);
 		});
 	}
 
